@@ -115,3 +115,67 @@ SELECT
 FROM health.user_logs
 WHERE measure = 'weight';
 ```
+
+
+EXERCISES
+
+1. What is the average, median and mode values of blood glucose values to 2 decimal places?
+
+```sql
+SELECT
+  ROUND(
+    AVG(measure_value),
+    2
+  ) AS mean_value,
+  
+  ROUND(
+    PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY measure_value)::NUMERIC,
+    2
+  ) AS median_value,
+  
+  ROUND(
+    MODE() WITHIN GROUP(ORDER BY measure_value),
+    2
+  ) AS mode
+FROM health.user_logs
+WHERE measure = 'blood_glucose';
+```
+
+2. What is the most frequently occuring measure_value value for all blood glucose measurements?
+
+```sql
+SELECT
+  measure_value,
+  COUNT(*) AS frequency
+FROM health.user_logs
+WHERE measure = 'blood_glucose'
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+```
+
+3. Calculate the 2 Pearson Coefficient of Skewness for blood glucose measures given the following formulas:
+
+```sql
+WITH statistic_values AS (
+  SELECT
+    AVG(measure_value) AS mean_value,
+    PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY measure_value) AS median_value,
+    MODE() WITHIN GROUP(ORDER BY measure_value) AS mode_value,
+    STDDEV(measure_value) AS standard_deviation
+  FROM health.user_logs
+  WHERE measure = 'blood_glucose'
+)
+
+SELECT
+  ROUND(
+    (mean_value - mode_value) / standard_deviation,
+    2
+  ) AS pearson_coefficent_1,
+  
+  ROUND(
+    3 * (mean_value - median_value)::NUMERIC / standard_deviation,
+    2
+  ) AS pearson_coefficient_2
+FROM statistic_values;
+```
