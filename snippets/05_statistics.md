@@ -32,5 +32,26 @@ The median shows the central location based off the values of the middle values.
 
 Median is the 50th percentile value.
 
+```sql
+WITH sample_data (example_values) AS (
+ VALUES
+ (82), (51), (144), (84), (120), (148), (148), (108), (160), (86)
+)
+SELECT
+  AVG(example_values) AS mean_value,
+  PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY example_values) AS median_value,
+  MODE() WITHIN GROUP (ORDER BY example_values) AS mode_value
+from sample_data;
+```
+
 ### 3. Mode.
 The mode focuses on the most frequent values. It could be more than one value.
+
+```sql
+SELECT
+  PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY measure_value) AS median_value,
+  MODE() WITHIN GROUP (ORDER BY measure_value) AS mode_value,
+  AVG(measure_value) as mean_value
+FROM health.user_logs
+WHERE measure = 'weight';
+```
