@@ -74,3 +74,44 @@ SELECT
 FROM min_max_values;
 ```
 
+
+#### 3.Variance & Standard Deviation
+
+These two important values are used to describe the “spread” of the data about the mean value. Also, the variance is simply the square of the standard deviation
+
+To explain this formula in simple terms - the variance is the sum of the (difference between each X value and the mean) squared, divided by N, the total number of values.
+
+```sql
+WITH sample_data (example_values) AS (
+ VALUES
+ (82), (51), (144), (84), (120), (148), (148), (108), (160), (86)
+)
+SELECT
+  ROUND(VARIANCE(example_values), 2) AS variance_value,
+  ROUND(STDDEV(example_values), 2) AS standard_dev_value,
+  ROUND(AVG(example_values), 2) AS mean_value,
+  PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY example_values) AS median_value,
+  MODE() WITHIN GROUP (ORDER BY example_values) AS mode_value
+FROM sample_data;
+```
+
+#### 4.Summary statistics
+
+```sql
+SELECT
+  ROUND( MIN(measure_value), 2) AS minimum_value,
+  ROUND( MAX(measure_value), 2) AS maximum_value,
+  ROUND( AVG(measure_value), 2) AS mean_value,
+  ROUND(
+    PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY measure_value) :: NUMERIC,
+    2
+  ) AS median_value,
+  ROUND(
+    MODE() WITHIN GROUP(ORDER BY measure_value):: NUMERIC,
+    2
+  ) AS mode,
+  ROUND(STDDEV(measure_value), 2) AS standard_deviation,
+  ROUND(VARIANCE(measure_value), 2) AS variance_value
+FROM health.user_logs
+WHERE measure = 'weight';
+```
