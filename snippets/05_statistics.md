@@ -55,3 +55,22 @@ SELECT
 FROM health.user_logs
 WHERE measure = 'weight';
 ```
+
+### 2. Min, Max, Range
+
+```sql
+WITH min_max_values AS (
+SELECT
+  MIN(measure_value) as minimum_value,
+  MAX(measure_value) as maximum_value
+FROM health.user_logs
+WHERE measure = 'weight'
+)
+
+SELECT
+  minimum_value,
+  maximum_value,
+  maximum_value - minimum_value AS range
+FROM min_max_values;
+```
+
