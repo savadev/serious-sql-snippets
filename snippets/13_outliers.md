@@ -1,6 +1,6 @@
-## Window functions
+## Outliers
 
-### 1. For Sorting Values.
+### 1. Detecting Sorting Values.
 
 ```sql
 WITH percentile_values AS (
@@ -26,7 +26,26 @@ ORDER BY measure_value DESC;
 
 ![alt text](https://github.com/ismaelcazalilla/serious-sql-snippets/blob/eb268c65e8352a9aa06a9974fbe26122777ae699/assets/images/window_functions_sorting.png)
 
-Differences between ROW_NUMBER, RANK and DENSE_RANK
-* ROW_NUMBER: assign uniques and incremental numbers from 1 for each partition.
-* RANK: assign NOT incremental either uniques numbers.
-* RANK_DENSE: assign incremental, but NOT uniques numbers.
+
+It looks like there are 3 huge values (maybe outliers).
+39642120
+39642120
+576484
+200.487664
+
+Maybe 200 is a valid value, but not the rest. The process should be repeated with the 1st percentile.
+
+
+### 1. Removing Outliers.
+
+```sql
+DROP TABLE IF EXISTS clean_weight_logs;
+
+CREATE TEMP TABLE clean_weight_logs AS (
+  SELECT *
+  FROM health.user_logs
+  WHERE measure = 'weight'
+    AND measure_value > 0
+    AND measure_value < 201
+);
+```
