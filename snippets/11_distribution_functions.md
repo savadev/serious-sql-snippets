@@ -49,3 +49,14 @@ FROM percentile_values
 GROUP BY percentile
 ORDER BY percentile;
 ```
+
+#### Critical Thinking
+It is a weight value in KG units.
+
+When we think of those small values in the 1st percentile under 29kg, a few things should come to mind:
+* Maybe there were some incorrectly measured values - leading to some 0kg weight measurements
+* Perhaps some of the low weights under 29kg were actually valid measurements from young children who were part of the customer base
+  
+For the 100th percentile we could consider:
+* Does that 136KG floor value make sense?
+* How many error values were there actually in the dataset?
