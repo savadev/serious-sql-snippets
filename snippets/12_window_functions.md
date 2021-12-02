@@ -25,3 +25,16 @@ ORDER BY measure_value DESC;
 ```
 
 ![alt text](https://github.com/ismaelcazalilla/serious-sql-snippets/blob/eb268c65e8352a9aa06a9974fbe26122777ae699/assets/images/window_functions_sorting.png)
+
+Differences between ROW_NUMBER, RANK and DENSE_RANK
+* ROW_NUMBER: assign uniques and incremental numbers from 1 for each partition.
+* RANK: assign NOT incremental either uniques numbers.
+* RANK_DENSE: assign incremental, but NOT uniques numbers.
+
+It looks like there are 3 huge values (maybe outliers).
+39642120
+39642120
+576484
+200.487664
+
+Maybe 200 is a valid value, but not the rest. The process should be repeated with the 1st percentile.
