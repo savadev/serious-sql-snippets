@@ -24,3 +24,4 @@ WHERE percentile = 100
 ORDER BY measure_value DESC;
 ```
 
+![alt text](https://github.com/ismaelcazalilla/serious-sql-snippets/blob/eb268c65e8352a9aa06a9974fbe26122777ae699/assets/images/window_functions_sorting.png)
